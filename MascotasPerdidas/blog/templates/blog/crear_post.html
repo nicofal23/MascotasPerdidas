@@ -1,0 +1,17 @@
+<!-- En blog/templates/blog/crear_post.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Crear una nueva publicación</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-group">
+            <label for="imagenes">Subir imágenes</label>
+            <input type="file" name="imagenes" multiple class="form-control-file">
+        </div>
+        <button type="submit" class="btn btn-primary">Publicar</button>
+    </form>
+</div>
+{% endblock %}

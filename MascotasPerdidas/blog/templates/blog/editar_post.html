@@ -1,0 +1,61 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Editar Publicación</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <div class="row">
+            {% for imagen in imagenes %}
+                <div class="col-md-3 mb-2">
+                    <a href="#" class="thumbnail" data-toggle="modal" data-target="#imageModal" data-img-url="{{ imagen.imagen.url }}">
+                        <img src="{{ imagen.imagen.url }}" alt="{{ post.titulo }}" class="img-thumbnail">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <label for="imagenes">Subir nuevas imágenes</label>
+            <input type="file" name="imagenes" multiple class="form-control-file">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>
+
+<!-- Modal for Image Preview -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Vista previa de la imagen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" class="img-fluid" alt="Imagen">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#imageModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Elemento que activó el modal
+            var imgUrl = button.data('img-url'); // Extrae la URL de la imagen
+            
+            console.log("Imagen URL:", imgUrl); // Añade este console.log para verificar la URL
+            
+            var modalImage = document.getElementById('modalImage');
+            modalImage.src = imgUrl; // Cambia la imagen del modal
+        });
+    });
+</script>
+{% endblock %}
