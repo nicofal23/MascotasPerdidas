@@ -186,6 +186,10 @@ h2.text-center {
 }
 
 
+.btn {
+    display: flex;  
+    justify-content: center !important;
+}
 .navbar-brand h1 {
     font-size: 2.5rem; /* Tamaño grande */
     color: #2c3e50; /* Color oscuro */

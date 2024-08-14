@@ -3,6 +3,7 @@ from .forms import PerfilForm, RegistroForm
 from .models import Perfil
 from django.contrib.auth import login
 from blog.models import Post
+from django.contrib.auth.decorators import login_required
 
 def signup(request):
     if request.method == 'POST':
@@ -20,35 +21,32 @@ def signup(request):
   # Asegúrate de que Post esté importado desde el módulo correcto
 
 
+@login_required
 def profile(request):
-    if request.user.is_authenticated:
-        print(f"Usuario autenticado: {request.user.username}")
-    else:
-        print("Usuario no autenticado")
-
     perfil, created = Perfil.objects.get_or_create(user=request.user)
     user_posts = Post.objects.filter(autor=request.user)
-    print(f"Publicaciones del usuario: {user_posts}")
 
     if request.method == 'POST':
-        form = PerfilForm(request.POST, request.FILES, instance=perfil)
+        form = PerfilForm(request.POST, request.FILES, instance=perfil, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('profile')
     else:
-        form = PerfilForm(instance=perfil)
-    print(f"Publicaciones del usuario: {list(user_posts)}")
-    print(f"Número de publicaciones: {user_posts.count()}")
+        form = PerfilForm(instance=perfil, user=request.user)
 
     return render(request, 'accounts/profile.html', {
         'form': form,
         'user_posts': user_posts
     })
 
-
 def ver_perfil(request, user_id):
     perfil = get_object_or_404(Perfil, user_id=user_id)
-    return render(request, 'accounts/ver_perfil.html', {'perfil': perfil})
+    publicaciones = Post.objects.filter(autor=perfil.user)
+
+    return render(request, 'accounts/ver_perfil.html', {
+        'perfil': perfil,
+        'publicaciones': publicaciones,
+    })
 
 
 

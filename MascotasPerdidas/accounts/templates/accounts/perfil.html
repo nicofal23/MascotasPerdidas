@@ -1,47 +1,54 @@
 {% extends 'base_generic.html' %}
-{% load form_tags %}
+
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">Perfil de Usuario</h2>
+    <h2 class="mb-4 text-center">Perfil de Usuario</h2>
 
     <!-- Información del Perfil -->
-    <div class="card mb-4">
+    <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <h5 class="card-title">Información del Perfil</h5>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
-                    {{ form.username.label_tag }}
-                    {{ form.username|add_class:"form-control" }}
+                    <label for="username">Nombre de usuario</label>
+                    <input type="text" id="username" name="username" value="{{ form.instance.user.username }}" class="form-control">
                 </div>
                 <div class="form-group">
-                    {{ form.email.label_tag }}
-                    {{ form.email|add_class:"form-control" }}
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" value="{{ form.instance.user.email }}" class="form-control">
                 </div>
                 <div class="form-group">
-                    {{ form.telefono.label_tag }}
-                    {{ form.telefono|add_class:"form-control" }}
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" id="telefono" name="telefono" value="{{ form.instance.telefono }}" class="form-control">
                 </div>
-                <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+                <div class="form-group">
+                    <label for="imagen">Imagen de Perfil</label>
+                    <input type="file" id="imagen" name="imagen" class="form-control-file">
+                    {% if form.instance.imagen %}
+                        <img src="{{ form.instance.imagen.url }}" class="img-thumbnail mt-2 rounded-circle" style="width: 150px;">
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Actualizar Perfil</button>
             </form>
         </div>
     </div>
 
     <!-- Publicaciones del Usuario -->
-    <h3 class="mb-4">Mis Publicaciones</h3>
+    <h3 class="mb-4 text-center">Mis Publicaciones</h3>
     {% if user_posts %}
         <div class="row">
             {% for post in user_posts %}
             <div class="col-md-4 mb-4">
-                <div class="card h-100">
+                <div class="card h-100 shadow-sm">
                     {% if post.imagenes.first %}
-                    <img src="{{ post.imagenes.first.imagen.url }}" class="card-img-top" alt="{{ post.titulo }}">
+                    <img src="{{ post.imagenes.first.imagen.url }}" class="card-img-top" alt="{{ post.titulo }}" style="height: 200px; object-fit: cover;">
                     {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ post.titulo }}</h5>
-                        <p class="card-text">{{ post.subtitulo }}</p>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-center">{{ post.titulo }}</h5>
+                        <p class="card-text text-muted">{{ post.cuerpo|truncatewords:20 }}</p> 
                     </div>
-                    <div class="card-footer d-flex justify-content-between">
+                    <div class="card-footer bg-white border-0 d-flex justify-content-between">
                         <a href="{% url 'editar_post' post.id %}" class="btn btn-warning btn-sm">Editar</a>
                         <form method="post" action="{% url 'borrar_post' post.id %}" style="display:inline;">
                             {% csrf_token %}
@@ -53,7 +60,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p>No tienes publicaciones aún.</p>
+        <p class="text-center text-muted">No tienes publicaciones aún.</p>
     {% endif %}
 </div>
 {% endblock %}

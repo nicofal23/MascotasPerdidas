@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'blog',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -125,6 +126,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+
 
 LOGOUT_REDIRECT_URL = 'logout_confirmation'
 # Default primary key field type
