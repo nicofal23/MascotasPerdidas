@@ -77,8 +77,8 @@ Sigue estos pasos para configurar el proyecto en tu máquina local:
 ### 1. Clona el repositorio:
 
 ```bash
-git clone https://github.com/tuusuario/mascotas-perdidas-rosario.git
-cd mascotas-perdidas-rosario
+git clone https://github.com/nicofal23/MascotasPerdidas.git
+cd MascotasPerdidas
 ```
 
 ## 2. Instala las dependencias:
