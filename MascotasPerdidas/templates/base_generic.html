@@ -77,8 +77,42 @@
         {% block content %}
         {% endblock %}
     </main>
-    <footer class="mt-4 text-center">
-        <p>&copy; 2024 Mascotas Perdidas</p>
+    <footer class="mt-4 text-center bg-light py-4" style="background-color: #2125292e !important;">
+        <div class="container">
+            <div class="row">
+                <!-- Sección de contacto -->
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope"></i> contacto@mascotasperdidas.com</li>
+                        <li><i class="fas fa-phone"></i> +54 341 123 4567</li>
+                    </ul>
+                </div>
+                <!-- Sección de navegación rápida -->
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Enlaces rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'listar_posts' %}">Publicaciones</a></li>
+                        <li><a href="{% url 'crear_post' %}">Crear publicación</a></li>
+                        <li><a href="{% url 'profile' %}">Mi perfil</a></li>
+                    </ul>
+                </div>
+                <!-- Sección de redes sociales -->
+                <div class="col-md-4">
+                    <h5>Síguenos</h5>
+                    <a href="http://www.facebook.com" class="mr-3" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="http://www.x.com" class="mr-3" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="http://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <!-- Derechos reservados -->
+            <div class="row mt-4">
+                <div class="col">
+                    <p class="text-muted">&copy; 2024 Mascotas Perdidas Rosario. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
     </footer>
+    
 </body>
 </html>

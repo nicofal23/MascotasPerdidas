@@ -65,7 +65,7 @@
 
             <!-- Mostrar botones de editar y borrar solo si es el autor -->
             {% if user == post.autor %}
-            <div class="mt-4">
+            <div class="mt-4" style="display: flex; gap: 20px;">
                 <a href="{% url 'editar_post' post.id %}" class="btn btn-warning">Editar Publicación</a>
                 <form method="post" action="{% url 'borrar_post' post.id %}" style="display:inline;">
                     {% csrf_token %}
@@ -147,6 +147,46 @@
         display: flex;
     z-index: -2 !important;
     }
+    .btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-warning {
+    color: white;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+    box-shadow: 0 4px 6px rgba(240, 173, 78, 0.5);
+}
+
+.btn-warning:hover {
+    background-color: #ec971f;
+    border-color: #d58512;
+    box-shadow: 0 6px 8px rgba(240, 173, 78, 0.7);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    color: white;
+    background-color: #d9534f;
+    border-color: #d9534f;
+    box-shadow: 0 4px 6px rgba(217, 83, 79, 0.5);
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+    border-color: #ac2925;
+    box-shadow: 0 6px 8px rgba(217, 83, 79, 0.7);
+    transform: translateY(-2px);
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(240, 173, 78, 0.25);
+}
+
 </style>
 {% endblock %}
 
