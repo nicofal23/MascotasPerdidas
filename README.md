@@ -106,4 +106,4 @@ Abre tu navegador y ve a <a href="http://127.0.0.1:8000/" target="_blank">http:/
 Si tienes alguna pregunta o sugerencia, no dudes en ponerte en contacto:
 
 Email: falciglionicolas@gmail.com   
-LinkedIn: <a href="www.linkedin.com/in/nicolasfalciglio" target="_blank">NicolasFalciglio</a>
+LinkedIn: https://www.linkedin.com/in/nicolasfalciglio
