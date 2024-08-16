@@ -7,6 +7,10 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-     path('ver_perfil/<int:user_id>/', views.ver_perfil, name='ver_perfil'),
-     path('logout_confirmation/', views.logout_confirmation, name='logout_confirmation'),
+    path('ver_perfil/<int:user_id>/', views.ver_perfil, name='ver_perfil'),
+    path('logout_confirmation/', views.logout_confirmation, name='logout_confirmation'),
+    path('admin/manage_users/', views.manage_users, name='manage_users'),
+    path('admin/delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
+    path('admin/give_admin/<int:user_id>/', views.give_admin_privileges, name='give_admin'),
+
 ]

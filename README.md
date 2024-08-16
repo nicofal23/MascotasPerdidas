@@ -107,3 +107,6 @@ Si tienes alguna pregunta o sugerencia, no dudes en ponerte en contacto:
 
 Email: falciglionicolas@gmail.com   
 LinkedIn: https://www.linkedin.com/in/nicolasfalciglio
+
+
+Video del proyecto: https://www.loom.com/share/467b2fa4fd1b4067941763061f7ed532?sid=94d36cbb-44c2-4ced-bdb5-4a6a74b94cd8

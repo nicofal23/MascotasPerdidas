@@ -8,7 +8,7 @@
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <h5 class="card-title">Información del Perfil</h5>
-            <form method="post" enctype="multipart/form-data">
+            <form id="profileForm" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="username">Nombre de usuario</label>
@@ -64,3 +64,23 @@
     {% endif %}
 </div>
 {% endblock %}
+{% block extra_js %}
+<script>
+    document.getElementById("profileForm").onsubmit = function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", this.action, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const newImageURL = document.querySelector('#id_imagen').files[0];
+                if (newImageURL) {
+                    document.querySelector(".navbar img.rounded-circle").src = URL.createObjectURL(newImageURL);
+                }
+            }
+        };
+        xhr.send(formData);
+    };
+</script>
+{% endblock %}
+

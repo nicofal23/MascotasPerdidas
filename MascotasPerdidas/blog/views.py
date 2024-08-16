@@ -85,26 +85,43 @@ def perfil(request):
         'user_posts': user_posts,
     })
 
+
 @login_required
 def editar_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id, autor=request.user)
+    post = get_object_or_404(Post, id=post_id)
+    
+    # Verificación de permisos
+    if not (request.user.is_superuser or request.user == post.autor):
+        return redirect('listar_posts')  # O cualquier otra página de error
+
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
+        
         if form.is_valid():
-            form.save()
-            # Elimina las imágenes existentes si se desea
-            post.imagenes.all().delete()
+            post_modificado = form.save(commit=False)
+            
+            # Verificación de cambios en los campos
+            if form.has_changed():
+                post_modificado.save()
 
-            for img in request.FILES.getlist('imagenes'):
-                Imagen.objects.create(post=post, imagen=img)
+            # Manejo de imágenes
+            if 'imagenes' in request.FILES:
+                post.imagenes.all().delete()  # Eliminamos imágenes anteriores
+                for img in request.FILES.getlist('imagenes'):
+                    Imagen.objects.create(post=post, imagen=img)
+            
             return redirect('profile')
     else:
         form = PostForm(instance=post)
-        imagenes = post.imagenes.all()
+    
+    imagenes = post.imagenes.all()
     return render(request, 'blog/editar_post.html', {'form': form, 'imagenes': imagenes})
-
+@login_required
 def borrar_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id, autor=request.user)
+    post = get_object_or_404(Post, id=post_id)
+    if not (request.user.is_superuser or request.user == post.autor):
+        return redirect('listar_posts')  # O cualquier otra página de error
+
     if request.method == 'POST':
         post.delete()
         return redirect('profile')
