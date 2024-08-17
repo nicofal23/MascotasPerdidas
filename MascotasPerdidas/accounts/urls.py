@@ -12,4 +12,5 @@ urlpatterns = [
      path('manage_users/', views.manage_users, name='manage_users'),
     path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('give_admin/<int:user_id>/', views.give_admin_privileges, name='give_admin'),
+   
 ]

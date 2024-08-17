@@ -99,3 +99,5 @@ def give_admin_privileges(request, user_id):
 
 
 
+def acerca_de_mi(request):
+    return render(request, 'acercademi.html')

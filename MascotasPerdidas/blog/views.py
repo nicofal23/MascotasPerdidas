@@ -126,3 +126,7 @@ def borrar_post(request, post_id):
         post.delete()
         return redirect('profile')
     return render(request, 'blog/borrar_post.html', {'post': post})
+
+
+def acerca_de_mi(request):
+    return render(request, 'blog/acercademi.html')
