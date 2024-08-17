@@ -65,17 +65,18 @@ def registro(request):
 
 @login_required
 def perfil(request):
+    print("Entrando a la vista del perfil")
     # Obtener o crear el perfil del usuario
     perfil, created = Perfil.objects.get_or_create(user=request.user)
     
     # Manejar la actualización del perfil
     if request.method == 'POST':
-        form = PerfilForm(request.POST, request.FILES, instance=perfil)
+        form = PerfilForm(request.POST, request.FILES, instance=perfil, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('profile')  # Redirige al perfil después de guardar
     else:
-        form = PerfilForm(instance=perfil)
+        form = PerfilForm(instance=perfil, user=request.user)
     
     # Filtrar publicaciones del usuario que ha iniciado sesión
     user_posts = Post.objects.filter(autor=request.user)

@@ -3,6 +3,11 @@ from .models import Perfil
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+from django import forms
+from .models import Perfil
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 class PerfilForm(forms.ModelForm):
     username = forms.CharField(max_length=150, required=True)
     email = forms.EmailField(required=True)
@@ -19,10 +24,7 @@ class PerfilForm(forms.ModelForm):
 
     def clean_username(self):
         username = self.cleaned_data['username']
-        if self.user:
-            if User.objects.filter(username__iexact=username).exclude(pk=self.user.pk).exists():
-                raise forms.ValidationError("El nombre de usuario ya está en uso.")
-        else:
+        if self.user.username != username:
             if User.objects.filter(username__iexact=username).exists():
                 raise forms.ValidationError("El nombre de usuario ya está en uso.")
         return username
@@ -37,6 +39,7 @@ class PerfilForm(forms.ModelForm):
                 user.save()
                 perfil.save()
         return perfil
+
 
 class RegistroForm(UserCreationForm):
     email = forms.EmailField(required=True)

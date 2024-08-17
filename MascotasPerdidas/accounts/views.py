@@ -21,13 +21,18 @@ def signup(request):
 
 @login_required
 def profile(request):
+    print("Entrando a la vista del perfil")
     perfil, created = Perfil.objects.get_or_create(user=request.user)
+    print("Perfil obtenido o creado")
 
     if request.method == 'POST':
-        form = PerfilForm(request.POST, request.FILES, instance=perfil, user=request.user)
+        print("Método POST recibido")
+        form = PerfilForm(request.POST, request.FILES, instance=perfil)
         if form.is_valid():
+            print("Formulario es válido")
             perfil = form.save(commit=False)
             
+            # Verifica si se subió una nueva imagen
             if 'imagen' in request.FILES:
                 print("Imagen cargada:", request.FILES['imagen'].name)
                 
@@ -35,18 +40,22 @@ def profile(request):
                 if perfil.imagen:
                     perfil.imagen.delete(save=False)
                 
-                # Asigna la nueva imagen
+                # Asigna la nueva imagen y guarda el perfil
                 perfil.imagen = request.FILES['imagen']
-            
-            perfil.save()  # Asegúrate de guardar el perfil después de hacer todos los cambios
+                perfil.save()
+                print(f"Imagen guardada en: {perfil.imagen.path}")
+            else:
+                print("No se encontró la imagen en request.FILES")
             
             return redirect('profile')
         else:
             print("Formulario no válido:", form.errors)
     else:
+        print("Método GET recibido")
         form = PerfilForm(instance=perfil, user=request.user)
 
     return render(request, 'accounts/perfil.html', {'form': form})
+
 
 def ver_perfil(request, user_id):
     perfil = get_object_or_404(Perfil, user_id=user_id)
