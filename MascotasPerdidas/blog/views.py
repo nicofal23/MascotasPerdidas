@@ -100,22 +100,21 @@ def editar_post(request, post_id):
         if form.is_valid():
             post_modificado = form.save(commit=False)
             
-            # Verificación de cambios en los campos
-            if form.has_changed():
-                post_modificado.save()
-
             # Manejo de imágenes
             if 'imagenes' in request.FILES:
-                post.imagenes.all().delete()  # Eliminamos imágenes anteriores
+                post.imagenes.all().delete()  # Eliminamos las imágenes anteriores
                 for img in request.FILES.getlist('imagenes'):
                     Imagen.objects.create(post=post, imagen=img)
             
+            post_modificado.save()
             return redirect('profile')
     else:
         form = PostForm(instance=post)
     
     imagenes = post.imagenes.all()
     return render(request, 'blog/editar_post.html', {'form': form, 'imagenes': imagenes})
+
+
 @login_required
 def borrar_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)

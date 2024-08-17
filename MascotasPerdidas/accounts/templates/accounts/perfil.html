@@ -4,7 +4,6 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Perfil de Usuario</h2>
 
-    <!-- Información del Perfil -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <h5 class="card-title">Información del Perfil</h5>
@@ -33,54 +32,5 @@
             </form>
         </div>
     </div>
-
-    <!-- Publicaciones del Usuario -->
-    <h3 class="mb-4 text-center">Mis Publicaciones</h3>
-    {% if user_posts %}
-        <div class="row">
-            {% for post in user_posts %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    {% if post.imagenes.first %}
-                    <img src="{{ post.imagenes.first.imagen.url }}" class="card-img-top" alt="{{ post.titulo }}" style="height: 200px; object-fit: cover;">
-                    {% endif %}
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-center">{{ post.titulo }}</h5>
-                        <p class="card-text text-muted">{{ post.cuerpo|truncatewords:20 }}</p> 
-                    </div>
-                    <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                        <a href="{% url 'editar_post' post.id %}" class="btn btn-warning btn-sm">Editar</a>
-                        <form method="post" action="{% url 'borrar_post' post.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p class="text-center text-muted">No tienes publicaciones aún.</p>
-    {% endif %}
 </div>
 {% endblock %}
-{% block extra_js %}
-<script>
-    document.getElementById("profileForm").onsubmit = function(event) {
-        event.preventDefault();
-        const formData = new FormData(this);
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", this.action, true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                const newImageURL = document.querySelector('#id_imagen').files[0];
-                if (newImageURL) {
-                    document.querySelector(".navbar img.rounded-circle").src = URL.createObjectURL(newImageURL);
-                }
-            }
-        };
-        xhr.send(formData);
-    };
-</script>
-{% endblock %}
-

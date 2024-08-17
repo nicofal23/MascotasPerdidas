@@ -4,40 +4,49 @@ from .models import Perfil
 from django.contrib.auth import login
 from blog.models import Post
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 
 def signup(request):
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
+        form = RegistroForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            Perfil.objects.create(user=user)
             login(request, user)
             return redirect('profile')
         else:
-            print(form.errors)  # Esto imprimirá los errores del formulario en la consola.
+            print(form.errors)
     else:
         form = RegistroForm()
     return render(request, 'registration/signup.html', {'form': form})
-  # Asegúrate de que Post esté importado desde el módulo correcto
-
 
 @login_required
 def profile(request):
     perfil, created = Perfil.objects.get_or_create(user=request.user)
-    user_posts = Post.objects.filter(autor=request.user)
 
     if request.method == 'POST':
         form = PerfilForm(request.POST, request.FILES, instance=perfil, user=request.user)
         if form.is_valid():
-            form.save()
+            perfil = form.save(commit=False)
+            
+            if 'imagen' in request.FILES:
+                print("Imagen cargada:", request.FILES['imagen'].name)
+                
+                # Eliminar la imagen anterior si es necesario
+                if perfil.imagen:
+                    perfil.imagen.delete(save=False)
+                
+                # Asigna la nueva imagen
+                perfil.imagen = request.FILES['imagen']
+            
+            perfil.save()  # Asegúrate de guardar el perfil después de hacer todos los cambios
+            
             return redirect('profile')
+        else:
+            print("Formulario no válido:", form.errors)
     else:
         form = PerfilForm(instance=perfil, user=request.user)
 
-    return render(request, 'accounts/profile.html', {
-        'form': form,
-        'user_posts': user_posts
-    })
+    return render(request, 'accounts/perfil.html', {'form': form})
 
 def ver_perfil(request, user_id):
     perfil = get_object_or_404(Perfil, user_id=user_id)
@@ -77,3 +86,7 @@ def give_admin_privileges(request, user_id):
     user.is_superuser = True
     user.save()
     return redirect('manage_users')
+
+
+
+
